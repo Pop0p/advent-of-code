@@ -12,7 +12,8 @@ File.open("./input.txt", "r") do |f|
     end
 end
 
-def check_path_non_recursive(start_position)
+# p1
+def check_path(start_position)
   stack = [[start_position, [], 0, start_position]]
   path = []
 
@@ -44,7 +45,54 @@ def check_path_non_recursive(start_position)
   path
 end
 
-path = check_path_non_recursive(start_index)
-path.shift(1)
-p path
+path = check_path(start_index)
+# p path
 p (path.length / 2.0).ceil
+
+# p2
+$pipes_grid.each_with_index do |r, ri|
+  r.each_with_index do |c, ci|
+    if c == "S"
+      r[ci] = "╝"
+      next
+    end
+    if !path.include? [ri, ci]
+      r[ci] = "."
+      next
+    end
+    if c == "L"
+      r[ci] = "╚"
+    elsif c == "J" 
+      r[ci] = "╝"
+    elsif c == "F"
+      r[ci] = "╔"
+    elsif c == "|"
+      r[ci] = "║"
+    elsif c == "7"
+      r[ci] = "╗"
+    elsif c == "-"
+      r[ci] = "═"
+    end
+  end
+end
+
+
+count = 0
+pattern = /╚═*╗|╔═*╝|\║/
+$pipes_grid.each_with_index do |row, row_index|
+  row.each_with_index do |cell, index|
+    if path.include? [row_index, index]
+      next
+    end
+    c = row[0, index].join.scan(pattern).length
+    if c % 2 == 1
+      row[index] = "#"
+      count += 1
+    end
+  end
+end
+
+puts count
+$pipes_grid.each do |r|
+  p r.join
+end
