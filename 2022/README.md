@@ -1,0 +1,27 @@
+# advent-of-code-2022
+
+- Day 01 - Rust - **2/2**
+- Day 02 - Python - **2/2**
+- Day 03 - Ruby - **2/2**
+- Day 04 - Ruby - **2/2**
+- Day 05 - Ruby - **2/2**
+- Day 06 - C# - **2/2**
+- Day 07 - Python - **2/2**
+- Day 08 - Rust - **2/2**
+- Day 09 - Ruby - **2/2**
+- Day 10 - Rust - **2/2**
+- Day 11 - C# - **2/2**
+- Day 12 - C# - **2/2**
+- Day 13 - Typescript - **2/2**
+- Day 14 - Ruby - **2/2**
+- Day 15 - Rust - **2/2**
+- ~~Day 16~~
+- ~~Day 17~~
+- Day 18 - Python - **2/2**
+- ~~Day 19~~
+- Day 20 - Typescript - **2/2**
+- Day 21 - Typescript - **2/2**
+- ~~Day 22~~
+- Day 23 - Ruby - **2/2**
+- ~~Day 24~~
+- Day 25 - Typescript - **1/2**
