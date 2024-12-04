@@ -10,4 +10,4 @@
   - Day 08 - Javascript - 2/2
   - Day 09 - C# - 2/2
   - Day 10 - Ruby - 2/2
-  - Day 11 - Javascript 2/2
+  - Day 11 - Javascript - 2/2
