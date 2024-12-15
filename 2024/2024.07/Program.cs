@@ -1,54 +1,53 @@
 ﻿long partOne = 0;
 long partTwo = 0;
+
 foreach (var line in File.ReadLines("./input.txt"))
 {
     var columns = line.Split(": ", StringSplitOptions.RemoveEmptyEntries);
     var testValue = long.Parse(columns[0]);
     var numbers = columns[1].Split(" ");
 
-    var expressions = GenerateExpressions(numbers.Select(long.Parse).ToArray(), ["+", "*"]);
-    if (expressions.Any(x => x == testValue))
+    if (GenerateExpressions(numbers.Select(long.Parse).ToArray(), ["+", "*"], testValue))
         partOne += testValue;
-    else
-    {
-        expressions = GenerateExpressions(numbers.Select(long.Parse).ToArray(), ["+", "*", "||"]);
-        if (expressions.Any(x => x == testValue))
-            partTwo += testValue;
-    }
+    else if (GenerateExpressions(numbers.Select(long.Parse).ToArray(), ["+", "*", "||"], testValue))
+        partTwo += testValue;
 }
 
 Console.WriteLine(partOne);
 Console.WriteLine(partTwo + partOne);
 
-static List<long> GenerateExpressions(long[] numbers, string[] operators)
+static bool GenerateExpressions(long[] numbers, string[] operators, long target)
 {
-    List<long> equations = [];
-    Backtrack(0, numbers[0]);
-    return equations;
+    return Backtrack(0, numbers[0]);
 
-    void Backtrack(long index, long current)
+    bool Backtrack(long index, long current)
     {
         if (index == numbers.Length - 1)
         {
-            equations.Add(current);
-            return;
+            return current == target;
         }
 
+        bool r = false;
         foreach (var op in operators)
         {
             switch (op)
             {
                 case "+":
-                    Backtrack(index + 1, current + numbers[index + 1]);
+                    r = Backtrack(index + 1, current + numbers[index + 1]);
                     break;
                 case "*":
-                    Backtrack(index + 1, current * numbers[index + 1]);
+                    r = Backtrack(index + 1, current * numbers[index + 1]);
                     break;
                 case "||":
-                    Backtrack(index + 1, Concat(current, numbers[index + 1]));
+                    r = Backtrack(index + 1, Concat(current, numbers[index + 1]));
                     break;
             }
+
+            if (r)
+                return true;
         }
+
+        return false;
     }
 }
 
