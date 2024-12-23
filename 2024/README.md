@@ -7,3 +7,4 @@
   - Day 05 - Javascript - 2/2
   - Day 06 - Ruby - 2/2
   - Day 07 - C# - 2/2
+  - Day 08 - C# - 2/2
