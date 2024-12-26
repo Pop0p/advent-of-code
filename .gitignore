@@ -1,1 +1,10 @@
-﻿.idea/
+.vscode/
+.idea/
+bin/
+obj/
+*.csproj
+*.sln
+*.user
+*.suo
+*.code-workspace
+packages/
