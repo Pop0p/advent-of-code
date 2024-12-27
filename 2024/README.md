@@ -9,3 +9,5 @@
   - Day 07 - C# - 2/2
   - Day 08 - C# - 2/2
   - Day 09 - Javascript - 2/2
+  - Day 10 - C# - 2/2
+  - Day 11 - C# - 2/2
