@@ -11,3 +11,5 @@
   - Day 09 - Javascript - 2/2
   - Day 10 - C# - 2/2
   - Day 11 - C# - 2/2
+  - Day 12 - C# - 2/2
+  - Day 13 - C# - 2/2 :weary:
