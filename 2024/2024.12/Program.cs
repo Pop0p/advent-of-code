@@ -7,19 +7,18 @@ var queue = new Queue<(int, int)>();
 
 int totalPartOne = 0;
 int totalPartTwo = 0;
+
 for (int yy = 0; yy < grid.Length; yy++)
 {
     for (int xx = 0; xx < grid.Length; xx++)
     {
         if (visited.Contains((yy, xx)))
             continue;
-
-
+        
         int currentGroupArea = 1;
         int currentGroupPerimeterPartOne = 0;
-        int currentGroupPerimeterPartTwo = 0;
+        int currentGroupPerimeterPartTwo = 4;
         List<(int, int)> currentGroupContacts = [];
-        List<char> currentGroupContactsDirection = [];
 
         queue.Enqueue((yy, xx));
         while (queue.Count > 0)
@@ -36,8 +35,7 @@ for (int yy = 0; yy < grid.Length; yy++)
                 {
                     currentGroupPerimeterPartOne += 1;
                     if (direction.Item2 != 0)
-                        currentGroupContacts.Add((newY + (y * 10), newX));
-                    // currentGroupContactsDirection.Add(direction.Item1 != 0 ? 'V' : 'H');
+                        currentGroupContacts.Add((newY + (y * 10), newX)); // Adding an offset so we don't have any overlap.   
                 }
                 else
                 {
@@ -54,50 +52,25 @@ for (int yy = 0; yy < grid.Length; yy++)
 
         if (currentGroupArea > 1)
         {
-            var hl = currentGroupContacts
-                .GroupBy(p => p.Item1).ToList(); // Grouper par y
             var horizontalLines = currentGroupContacts
-                .GroupBy(p => p.Item1) // Grouper par y
+                .GroupBy(p => p.Item1)
                 .SelectMany(g => g
-                    .OrderBy(p => p.Item2) // Trier par x
+                    .OrderBy(p => p.Item2)
                     .Aggregate(new List<List<(int, int)>>(), (acc, current) =>
                     {
-                        if (acc.Count != 0 && acc.Last().Contains(current))
-                            return acc;
                         if (acc.Count == 0 || current.Item2 != acc.Last().Last().Item2 + 1)
-                            acc.Add(new List<(int, int)> { current }); // Nouvelle séquence
+                            acc.Add([current]);
                         else
-                            acc.Last().Add(current); // Ajouter à la séquence en cours
+                            acc.Last().Add(current); 
                         return acc;
                     }))
                 .ToList();
-            currentGroupPerimeterPartTwo = horizontalLines.Count() * 2;
-        }
-        else
-        {
-            currentGroupPerimeterPartTwo = 4;
+            currentGroupPerimeterPartTwo = horizontalLines.Count * 2;
         }
 
-        Console.WriteLine(grid[yy][xx] + " : " + currentGroupArea + " * " + currentGroupPerimeterPartTwo);
         totalPartOne += currentGroupArea * currentGroupPerimeterPartOne;
         totalPartTwo += currentGroupArea * currentGroupPerimeterPartTwo;
     }
-}
-
-bool AreConnected(List<(int, int)> seq1, List<(int, int)> seq2)
-{
-    foreach (var p1 in seq1)
-    {
-        foreach (var p2 in seq2)
-        {
-            if (Math.Abs(p1.Item1 - p2.Item1) <= 1 && Math.Abs(p1.Item2 - p2.Item2) <= 1)
-            {
-                return true;
-            }
-        }
-    }
-
-    return false;
 }
 
 Console.WriteLine(totalPartOne);
