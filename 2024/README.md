@@ -13,3 +13,4 @@
   - Day 11 - C# - 2/2
   - Day 12 - C# - 2/2
   - Day 13 - C# - 2/2 :weary:
+  - Day 14 - Ruby - 2/2
