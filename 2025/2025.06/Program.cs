@@ -1,55 +1,52 @@
 ﻿using helpers;
 
-var test = "123 328  51 64 \n 45 64  387 23 \n  6 98  215 314\n*   +   *   +  ";
+var p1Rows = Helper.ReadLines(await Helper.GetData(6)).Select(x => x.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)).ToArray();
+var p2Rows = Helper.ReadLines(await Helper.GetData(6)).ToArray();
 
-List <String> [] problems = null;
-var             data     = await Helper.GetData (6);
-var             rows     = Helper.ReadLines (data).ToArray ();
-for (var x = 0; x < rows.Length - 1; x ++)
+var rows = p2Rows.Length - 1;
+var p1Problems = p1Rows.Take(p1Rows.Length - 1).SelectMany(elements => elements).ToArray();
+var p2Problems = new List<string>();
+for (var x = 0; x < p2Rows.First().Length; x++)
 {
-  var elements = rows [x].Split (' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-  problems ??= new List<String> [elements.Length];
-  for (var i = 0; i < elements.Length; i ++)
-  {
-    problems [i] ??= new List <String> ();
-    problems [i].Add (elements [i]);
-  }
-}
-for (var i = 0; i < problems.Length; i ++)
-{
-  problems [i] = problems [i].OrderByDescending (x => x.ToString ().Length).ToList ();
-  
+    var el = p2Rows.First()[x].ToString();
+    for (var y = 1; y < rows; y++)
+        el += p2Rows[y][x];
+    p2Problems.Add(el);
 }
 
+Console.WriteLine(Calculate(p1Rows.Last(), p1Problems, p1Rows.First().Length, false));
+Console.WriteLine(Calculate(p1Rows.Last(), p2Problems.ToArray(), rows, true));
 
-var p1   = new List <Int64> ();
-var p2   = new List <Int64> ();
-var operands = rows [^1].Split (' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-for (var i = 0; i < problems.Length; i ++)
+return;
+
+static UInt64 Calculate(String[] last, String[] pbs, int rowSize, bool p2)
 {
-  var operand = operands [i];
-  switch (operand)
-  {
-    case "+" :
-      p1.Add (problems[i].Select(Int64.Parse).Sum());
-      for (var x = 0; x < problems[i].Count; x ++)
-      {
-        var ell         = new List <string> ();
-        var pbs         = problems [i];
-        var longestWord = pbs[0].Length;
-        for (var p = 0; p < longestWord; p ++)
+    UInt64 total = 0;
+    var lastIndex = 0;
+    for (var i = 0; i < last.Length; i++)
+    {
+        String[] elements;
+        if (!p2)
+            elements = pbs.Where((_, x) => x % rowSize == i).ToArray();
+        else
         {
-          foreach (var problem in pbs)
-          {
-            ell.Add (problem[longestWord - problem.Length + p].ToString());
-          }
-          p2.Add(ell.Select (Int64.Parse).Sum ());
+            var id = pbs.Skip(lastIndex).ToArray().IndexOf(new String(' ', rowSize));
+            elements = pbs.Skip(lastIndex).Take(id == -1 ? pbs.Length - lastIndex : id).ToArray();
+            lastIndex += id + 1;
         }
-      }
-      break;
-    case "*" :
-      p1.Add (problems [i].Select(Int64.Parse).Aggregate ((a, b) => a * b));
-      break;
-  }
+
+        var expression = last[i];
+
+        switch (expression)
+        {
+            case "+":
+                total += elements.Select(UInt64.Parse).Aggregate((x, y) => x + y);
+                break;
+            case "*":
+                total += elements.Select(UInt64.Parse).Aggregate((x, y) => x * y);
+                break;
+        }
+    }
+
+    return total;
 }
-Console.WriteLine (p1.Sum ());
